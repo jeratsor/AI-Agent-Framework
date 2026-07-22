@@ -3,6 +3,8 @@ import pandas as pd
 
 from agents.base_agent import BaseAgent
 from connectors.csv_connector import CSVConnector
+from utils.registry import ConnectorRegistry # main class with the connectors registry -acts as the intremediary to the connector and agent
+
 
 
 class CollectionAgent(BaseAgent):
@@ -13,6 +15,11 @@ class CollectionAgent(BaseAgent):
             name="Collection Agent",
             description="Collects data from multiple sources."
         )
+
+        self.registry = ConnectorRegistry()
+        self.registry.register(".csv", CSVConnector)
+        #self.registry.register(".xlsx", ExcelConnector)
+
 
     def execute(self):
         """
@@ -26,15 +33,7 @@ class CollectionAgent(BaseAgent):
 
         extension = Path(source).suffix.lower()
 
-        if extension == ".csv":
-
-            connector = CSVConnector(source)
-
-        else:
-
-            raise ValueError(
-                f"No connector available for {extension}"
-            )
+        connector = self.registry.get_connector(source)
 
         self.logger.info(f"Collecting data from {source}")
 
