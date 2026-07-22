@@ -28,3 +28,9 @@ pip install -r requirements.txt
 ## Status
 
 🚧 In Development
+
+##  git hub updates
+- git status
+- git add <File>
+- git status - checks if the files are ready for commitment
+- git commit -m "Project name i.e Initial AI Agent Framework structure"
