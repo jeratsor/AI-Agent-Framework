@@ -36,7 +36,7 @@ pip install -r requirements.txt
 - git commit -m "Project name i.e Initial AI Agent Framework structure" - local
 - git branch - checks your branch
 - git add . - saves everything at once
-- git push origin main - lets you save everything on the main repository on the account
+- git push origin main OR git push- lets you save everything on the main repository on the account
 
 ## Accessing Excel files
 - pip install openpyxl
