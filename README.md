@@ -97,3 +97,25 @@ Tests:
 | Excel | ExcelConnector | ✅ Complete |
 | REST API | RESTAPIConnector | Planned |
 | SQL Database | SQLConnector | Planned |
+
+
+
+# Refactor connector registration into setup module
+Agents → do work
+Registry → routes connectors
+Connector setup → configures available data sources
+Connectors → handle data access
+
+
+Collection Agent
+      |
+      ↓
+connector_setup.py
+      |
+      ↓
+Connector Registry
+      |
+      ├── CSVConnector
+      ├── ExcelConnector
+      ├── RESTAPIConnector
+      └── SQLConnector

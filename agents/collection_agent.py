@@ -1,9 +1,8 @@
 import pandas as pd
+import pandas as pd
 
 from agents.base_agent import BaseAgent
-from connectors.csv_connector import CSVConnector
-from connectors.excel_connector import ExcelConnector
-from utils.registry import ConnectorRegistry
+from utils.connector_setup import create_registry
 
 
 class CollectionAgent(BaseAgent):
@@ -15,17 +14,9 @@ class CollectionAgent(BaseAgent):
             description="Collects data from multiple sources."
         )
 
-        self.registry = ConnectorRegistry()
-
-        self.registry.register(
-            ".csv",
-            CSVConnector
-        )
-
-        self.registry.register(
-            ".xlsx",
-            ExcelConnector
-        )
+        # Pulls from the connector registry to get
+        # the appropriate connector for the source type
+        self.registry = create_registry()
 
 
     def execute(self):
