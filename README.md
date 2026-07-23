@@ -34,3 +34,7 @@ pip install -r requirements.txt
 - git add <File>
 - git status - checks if the files are ready for commitment
 - git commit -m "Project name i.e Initial AI Agent Framework structure"
+-git branch - checks your branch
+
+## Accessing Excel files
+- pip install openpyxl
