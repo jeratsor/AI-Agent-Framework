@@ -107,15 +107,33 @@ Connector setup → configures available data sources
 Connectors → handle data access
 
 
-Collection Agent
-      |
-      ↓
-connector_setup.py
-      |
-      ↓
-Connector Registry
-      |
-      ├── CSVConnector
-      ├── ExcelConnector
-      ├── RESTAPIConnector
-      └── SQLConnector
+                         User / Pipeline
+                              |
+                              ↓
+                   +----------------------+
+                   |   Collection Agent   |
+                   +----------------------+
+                              |
+                              ↓
+                   +----------------------+
+                   | Connector Setup      |
+                   | (configuration)      |
+                   +----------------------+
+                              |
+                              ↓
+                   +----------------------+
+                   | Connector Registry   |
+                   | (routing logic)      |
+                   +----------------------+
+                              |
+              --------------------------------
+              |                              |
+              ↓                              ↓
+      +---------------+              +---------------+
+      | CSV Connector |              | Excel Connector|
+      +---------------+              +---------------+
+              |                              |
+              --------------------------------
+                              |
+                              ↓
+                         DataFrame
