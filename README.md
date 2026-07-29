@@ -165,3 +165,8 @@ Connectors → handle data access
                     |
                     ↓
              pandas DataFrame
+
+Save process: git add .
+git commit -m "Add REST API connector for live weather data"
+git push
+

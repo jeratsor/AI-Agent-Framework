@@ -29,11 +29,11 @@ class RESTAPIConnector(BaseConnector):
         response.raise_for_status()
 
         self.response = response.json()
+
+       
         ## JSON returns a nested structure, so we need to normalize it into a flat table.
         return pd.json_normalize(self.response)
 
-        return pd.DataFrame( self.response)
-     
         """return pd.DataFrame( self.response)"""
 
 
