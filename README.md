@@ -137,3 +137,31 @@ Connectors → handle data access
                               |
                               ↓
                          DataFrame
+
+## Rest API Connector
+- lets the collection access data from APIs e.g Openweather
+- Update registry file so it detects connectors using .file (.csv,etc) and URL extentions
+- pip install python-dotenv - lets you run an API key from your .env
+- .gitignore prevents API key being shared to the public on github
+- Make sure your pip install is installed in the root python file, so the API recall works
+
+                 Data Source
+                      |
+      ---------------------------------
+      |               |               |
+      ↓               ↓               ↓
+   CSV File      Excel File      REST API
+      |               |               |
+      ↓               ↓               ↓
+ CSVConnector   ExcelConnector   RESTAPIConnector
+         \          |          /
+          \         |         /
+           +-----------------+
+           | ConnectorRegistry|
+           +-----------------+
+                    |
+                    ↓
+            CollectionAgent
+                    |
+                    ↓
+             pandas DataFrame

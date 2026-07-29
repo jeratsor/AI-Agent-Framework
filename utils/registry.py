@@ -25,13 +25,23 @@ class ConnectorRegistry:
             registry.register(".csv", CSVConnector)
         """
         self._connectors[extension.lower()] = connector_class
-
+       
+                
     def get_connector(self, source: str):
         """
         Returns an instance of the correct connector.
         """
 
-        extension = Path(source).suffix.lower()
+        #extension = Path(source).suffix.lower()
+
+        """
+        Update the registry to include the new connector class for the given file extension.
+        """
+        if source.startswith("http"):
+            extension = "api"
+        else:
+            extension = Path(source).suffix.lower()
+
 
         if extension not in self._connectors:
 

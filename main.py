@@ -18,7 +18,7 @@ from agents.collection_agent import CollectionAgent
 
 agent = CollectionAgent()
 
-df = agent.collect("data/sales.csv")
+df = agent.collect("data/sales.csv") # or "data/sales.xlsx" or "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=YOUR_API_KEY"
 
 print(df)
 
