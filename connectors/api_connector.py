@@ -28,6 +28,10 @@ class RESTAPIConnector(BaseConnector):
 
         response.raise_for_status()
 
+        """
+        Load REST API data.
+        """
+
         self.response = response.json()
 
        

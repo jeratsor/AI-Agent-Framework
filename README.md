@@ -166,7 +166,52 @@ Connectors → handle data access
                     ↓
              pandas DataFrame
 
+
+
+ ## SAVE YOUR FILE ON GITHUB            
 Save process: git add .
 git commit -m "Add REST API connector for live weather data"
 git push
+##
+
+
+
+## 🏗️ SQL lite connector set up - useful for SQL queries.
+
+1. Create a sample database (.db).
+2. Update the sqlite connector - connect();collect();close().
+3. Connect the connector_set up file with the new sqlite connector.
+4. Created a sample database and ran it in the terminal: python create_sample_database.py
+      - Create the .py file in the root, so the new sql lite file is created in the data folder.
+5. Added a query parameter in the collect function () so users can query data bases from the collection agent. Logic remains the same for other data files.
+6. Save the updates on github: 
+     git add .
+     git commit -m "Add SQL query support to SQLite connector"
+     git push
+7. Structure:
+                         Collection Agent
+                           |
+                           | source + optional query
+                           ↓
+                  Connector Registry
+                           |
+       ┌──────────┬───────┼──────────┐
+       ↓          ↓       ↓          ↓
+      CSV       Excel   REST API    SQLite
+       |          |       |           |
+       ↓          ↓       ↓           ↓
+   collect()  collect() collect()  collect(query)
+                                      |
+                                      ↓
+                                  SQL Database
+                                      |
+                                      ↓
+                                  DataFrame
+
+                                  
+
+## sharepoint Connector set up - Useful for private enterprise databases.
+
+1. 
+
 

@@ -15,7 +15,9 @@ class CSVConnector(BaseConnector):
     def collect(self) -> pd.DataFrame:
 
         self.connect()
-
+        """
+        Load CSV data.
+        """
         df = pd.read_csv(self.source)
 
         self.close()
