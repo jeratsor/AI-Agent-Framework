@@ -28,31 +28,51 @@ class ConnectorRegistry:
        
                 
     def get_connector(self, source: str):
-        """
-        Returns an instance of the correct connector.
-        """
 
-        #extension = Path(source).suffix.lower()
+        source_lower = source.lower()
 
-        """
-        Update the registry to include the new connector class for the given file extension.
-        """
-        if source.startswith("http"):
-            extension = "api"
-        else:
-            extension = Path(source).suffix.lower()
+        # Direct connector key - SharePoint, API, etc.
+        if source_lower in self._connectors:
 
+            connector_class = self._connectors[
+                source_lower
+            ]
+
+            return connector_class(source)
+
+        # -----------------------------------------
+        # REST API URL
+        # -----------------------------------------
+
+        if source_lower.startswith(
+            ("http://", "https://")
+        ):
+
+            if "api" in self._connectors:
+
+                connector_class = self._connectors[
+                    "api"
+                ]
+
+                return connector_class(source)
+
+        # File extension - CSV, Excel, SQLite, etc.
+        extension = Path(source).suffix.lower()
 
         if extension not in self._connectors:
 
-            available = ", ".join(self._connectors.keys())
+            available = ", ".join(
+                self._connectors.keys()
+            )
 
             raise ValueError(
                 f"No connector registered for '{extension}'. "
                 f"Available connectors: {available}"
             )
 
-        connector_class = self._connectors[extension]
+        connector_class = self._connectors[
+            extension
+        ]
 
         return connector_class(source)
 

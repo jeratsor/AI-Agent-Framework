@@ -26,7 +26,7 @@ class CollectionAgent(BaseAgent):
         return True
 
 
-    def collect(self, source: str, query: str =None) -> pd.DataFrame:
+    def collect(self, source: str, **kwargs) -> pd.DataFrame:
 
         self.logger.info(
             f"Collecting data from {source}"
@@ -38,14 +38,11 @@ class CollectionAgent(BaseAgent):
 
         #Update to the collection agent so you can query SQL files from the collection agent.
         #df = connector.collect()
-        if query is not None:
-            df = connector.collect(query)
-        else:
-            df = connector.collect()
-
-        connector.close()
-
-
+        try:
+            df = connector.collect(**kwargs)
+        finally:
+            connector.close()
+        
         self.update_metric(
             "rows",
             len(df)
