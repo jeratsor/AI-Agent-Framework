@@ -34,9 +34,7 @@ class ConnectorRegistry:
         # Direct connector key - SharePoint, API, etc.
         if source_lower in self._connectors:
 
-            connector_class = self._connectors[
-                source_lower
-            ]
+            connector_class = self._connectors[source_lower]
 
             return connector_class(source)
 
@@ -50,9 +48,7 @@ class ConnectorRegistry:
 
             if "api" in self._connectors:
 
-                connector_class = self._connectors[
-                    "api"
-                ]
+                connector_class = self._connectors["api"]
 
                 return connector_class(source)
 

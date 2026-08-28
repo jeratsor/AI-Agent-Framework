@@ -211,7 +211,7 @@ git push
 
                                   
 
-## sharepoint Connector set up - Useful for private enterprise databases.
+##   Sharepoint Connector set up - Useful for private enterprise databases.
 
                     SharePoint Development
 
@@ -290,4 +290,51 @@ git push
 
 
 #####   🧹  CLEANING AGENT:
+          Source
+          ↓
+          CollectionAgent
+          ↓
+          DataFrame
+          ↓
+          CleaningAgent
+          ↓
+          Clean DataFrame
 
+ ## Cleaning duties:
+     1. Missing values
+          - Identify nulls
+     2. Decide whether to remove, fill, or preserve them
+          - Duplicate records
+          - Detect duplicates
+          - Remove duplicates when appropriate
+     3. Column names
+          - Standardize column names
+          - Remove unnecessary whitespace
+          - Normalize capitalization
+     4. Data types
+          - Detect incorrect types
+          - Convert dates, numbers, strings, etc.
+     5. Whitespace / text cleanup
+          - " John " → "John"
+          - Normalize empty strings
+     6. Basic data validation
+          - Identify suspicious values
+          - Flag problems rather than blindly changing data
+     7. Cleaning metrics
+          - Number of rows before/after
+          - Number of duplicates removed
+          - Missing values detected
+          - Columns modified
+          - Data types changed
+
+- Break the cleaning agent into 2 stages:
+     - Prolife the data
+     - clean the data.
+
+- Created a utility for the data cleaner - this will determine what kind of cleaning is needed.
+- similar to our connector_setup and registry, this file will determine what kind of cleaning activity is needed.
+
+               DataCleaner → performs deterministic cleaning operations.
+               CleaningAgent → manages the cleaning process and records what happened.
+               Validation agent → Inspect the cleaned DataFrame and determine whether it meets basic quality requirements.
+               CollectionAgent → only retrieves data.
