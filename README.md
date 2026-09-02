@@ -328,7 +328,7 @@ git push
           - Data types changed
 
 - Break the cleaning agent into 2 stages:
-     - Prolife the data
+     - Prolife the data.
      - clean the data.
 
 - Created a utility for the data cleaner - this will determine what kind of cleaning is needed.
@@ -338,3 +338,26 @@ git push
                CleaningAgent → manages the cleaning process and records what happened.
                Validation agent → Inspect the cleaned DataFrame and determine whether it meets basic quality requirements.
                CollectionAgent → only retrieves data.
+- Create validation agent:
+Important questions to ask.
+ -> Is the DataFrame empty?
+ -> Are required columns present?
+ -> Are there remaining missing values?
+ -> Are there duplicate rows?
+ -> Are specified columns numeric?
+ -> What is the overall validation status?
+  - read-only quality-control stage
+
+
+## Build the pipeline for all agents - collection, cleaning, and validation agent
+
+
+
+
+## Storage /Persistence layer
+ - we need a location to store our validated data.
+ Process:
+     1. Create a .PY file under the storage folder.
+     2. Create a check in the pipeline.py file that ensures the storage feature works.
+
+

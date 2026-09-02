@@ -25,3 +25,9 @@ htmlcov/
 # OS files
 Thumbs.db
 .DS_Store
+
+#test files - hide all test files except for test_storage.py
+/test_*
+/test_sharepoint_download.py
+/test_sharepoint_drives.py
+
