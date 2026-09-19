@@ -361,3 +361,12 @@ Important questions to ask.
      2. Create a check in the pipeline.py file that ensures the storage feature works.
 
 
+## Header detector 
+- we need to able to detect the correct header in our code before the cleaning and validating agents.
+- We should create a header_detector.py file in the utils and apply it to the cleaning agent.
+- Our detectors already assume the 1st row is the begining of the dataset, but sometimes the data is incorrect.
+- This process will allow our connectors know the begining of the header, before passing along to the cleaning agent and validation agent.
+
+ Process:
+ After creating the header detection file and applying them to the connectors, we then input the apply header file to the cleaning agent.
+ - In order for the connectors to not read the read the 1st header and true, we input : header=None on each connector.

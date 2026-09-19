@@ -2,6 +2,7 @@ import pandas as pd
 
 from agents.base_agent import BaseAgent
 from utils.data_cleaner import DataCleaner
+from utils.header_detector import HeaderDetector
 
 
 class CleaningAgent(BaseAgent):
@@ -14,6 +15,7 @@ class CleaningAgent(BaseAgent):
         )
 
         self.cleaner = DataCleaner()
+        self.detector = HeaderDetector()
 
 
     # =========================================================
@@ -27,6 +29,41 @@ class CleaningAgent(BaseAgent):
         """
 
         return True
+
+
+    # =========================================================
+    # APPLY HEADER
+    # Detect and apply the correct header row.
+    # =========================================================
+
+    def _apply_header(
+        self,
+        df: pd.DataFrame
+    ) -> tuple[pd.DataFrame, int]:
+
+        header_row = self.detector.detect(df)
+
+        self.logger.info(
+            f"Detected header row: {header_row}"
+        )
+
+        header = df.iloc[header_row]
+
+        cleaned_df = df.iloc[header_row + 1:].copy()
+
+        cleaned_df.columns = [
+            str(column).strip()
+            if pd.notna(column)
+            else f"unnamed_{index}"
+            for index, column in enumerate(header)
+        ]
+
+        cleaned_df.reset_index(
+            drop=True,
+            inplace=True
+        )
+
+        return cleaned_df, header_row
 
 
     # =========================================================
@@ -58,21 +95,32 @@ class CleaningAgent(BaseAgent):
 
 
         # -----------------------------------------
-        # Profile original data
+        # Record raw input metrics
+        # -----------------------------------------
+
+        rows_before = len(df)
+
+        columns_before = len(df.columns)
+
+
+        # -----------------------------------------
+        # Header detection and application
+        # -----------------------------------------
+
+        df, header_row = self._apply_header(df)
+
+
+        rows_after_header = len(df)
+
+
+        # -----------------------------------------
+        # Profile data after header application
         # -----------------------------------------
 
         profile = self.cleaner.profile(
             df
         )
 
-
-        # -----------------------------------------
-        # Record initial metrics
-        # -----------------------------------------
-
-        rows_before = profile["rows"]
-
-        columns_before = profile["columns"]
 
         duplicates_found = profile[
             "duplicate_rows"
@@ -86,6 +134,10 @@ class CleaningAgent(BaseAgent):
         )
 
 
+        # -----------------------------------------
+        # Record initial metrics
+        # -----------------------------------------
+
         self.update_metric(
             "rows_before",
             int(rows_before)
@@ -94,6 +146,16 @@ class CleaningAgent(BaseAgent):
         self.update_metric(
             "columns_before",
             int(columns_before)
+        )
+
+        self.update_metric(
+            "header_row",
+            int(header_row)
+        )
+
+        self.update_metric(
+            "rows_after_header",
+            int(rows_after_header)
         )
 
         self.update_metric(
@@ -129,8 +191,12 @@ class CleaningAgent(BaseAgent):
         )
 
 
+        # -----------------------------------------
+        # Calculate actual duplicate removal
+        # -----------------------------------------
+
         duplicates_removed = (
-            rows_before
+            rows_after_header
             - rows_after
         )
 
@@ -159,7 +225,12 @@ class CleaningAgent(BaseAgent):
         # Log results
         # -----------------------------------------
 
-        self.logger.info(f"Cleaning complete. "f"Rows: {rows_before} -> {rows_after}")
+        self.logger.info(
+            f"Cleaning complete. "
+            f"Raw rows: {rows_before} -> "
+            f"After header: {rows_after_header} -> "
+            f"After cleaning: {rows_after}"
+        )
 
         self.logger.info(
             f"Duplicates found: "

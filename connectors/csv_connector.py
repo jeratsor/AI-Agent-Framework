@@ -18,7 +18,7 @@ class CSVConnector(BaseConnector):
         """
         Load CSV data.
         """
-        df = pd.read_csv(self.source)
+        df = pd.read_csv(self.source, header=None)  # Load without assuming a header row
 
         self.close()
 

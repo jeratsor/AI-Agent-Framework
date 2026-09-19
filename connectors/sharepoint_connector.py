@@ -593,7 +593,8 @@ class SharePointConnector(BaseConnector):
         ):
 
             return pd.read_excel(
-                file_bytes
+                file_bytes,
+                header=None
             )
 
 
@@ -637,13 +638,7 @@ class SharePointConnector(BaseConnector):
     # =============================================================
     # READ SQLITE DATABASE
     # =============================================================
-
-    def _read_sqlite_database(
-        self,
-        file_content: bytes,
-        file_path: str
-    ) -> pd.DataFrame:
-
+    
         # ---------------------------------------------------------
         # Validate SQLite file signature
         #

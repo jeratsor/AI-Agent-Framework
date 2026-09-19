@@ -19,9 +19,11 @@ class ExcelConnector(BaseConnector):
 
     def collect(self):
         """
-        Load Excel data.
+        Load Excel data without assuming a header row. 
+        The HeaderDetector will be used later to determine the correct header.
         """
-        self.data = pd.read_excel(self.source)
+        self.data = pd.read_excel(self.source, header=None)
+
         return self.data
 
     def close(self):
