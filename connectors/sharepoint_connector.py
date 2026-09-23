@@ -605,7 +605,8 @@ class SharePointConnector(BaseConnector):
         elif extension == ".csv":
 
             return pd.read_csv(
-                file_bytes
+                file_bytes,
+                header=None
             )
 
 
@@ -634,7 +635,11 @@ class SharePointConnector(BaseConnector):
                 ".xlsx, .xls, .csv, .db"
             )
 
-
+    def _read_sqlite_database(
+        self,
+        file_content: bytes,
+        file_path: str
+    ) -> pd.DataFrame:
     # =============================================================
     # READ SQLITE DATABASE
     # =============================================================
@@ -727,12 +732,40 @@ class SharePointConnector(BaseConnector):
                     "contains no user tables."
                 )
 
+            # -----------------------------------------------------
+            # Display available tables
+            # -----------------------------------------------------
+
+            print("\nAvailable SQLite tables:")
+            print("------------------------")
+
+            for index, table_name in enumerate(
+                tables,
+                start=1
+            ):
+                print(
+                    f"{index}. {table_name}"
+                )
+
 
             # -----------------------------------------------------
-            # Select first table
+            # Select table
             # -----------------------------------------------------
 
-            table_name = tables[0]
+            selection = input("\nSelect a table number: " )
+
+            try:
+                selection = int(selection)
+            except ValueError:
+                raise ValueError(
+                    "Table selection must be a number."
+                )
+                if selection < 1 or selection > len(tables):
+                    raise ValueError(
+                        "Invalid table selection."
+                    )
+                table_name = tables[selection - 1]
+
 
 
             # -----------------------------------------------------
@@ -765,15 +798,11 @@ class SharePointConnector(BaseConnector):
 
 
             # -----------------------------------------------------
-            # Read table into DataFrame
+            # Read selected table into DataFrame
             # -----------------------------------------------------
 
-            df = pd.read_sql_query(
-                f"SELECT * FROM "
-                f"{quoted_table_name}",
-                conn
-            )
-
+            query = f"SELECT * FROM {quoted_table_name}"
+            df = pd.read_sql_query(query, conn)
 
             return df
 

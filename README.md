@@ -369,4 +369,54 @@ Important questions to ask.
 
  Process:
  After creating the header detection file and applying them to the connectors, we then input the apply header file to the cleaning agent.
- - In order for the connectors to not read the read the 1st header and true, we input : header=None on each connector.
+ - In order for the connectors to not read the read the 1st header and true, we input : header=None on the csv and excel connectors.
+ - for the sql connector, we apply a method that can allow us to read the table and select the table before applying the header detector.
+
+                     ┌─────────────────┐
+                    │ CollectionAgent │
+                    └────────┬────────┘
+                             │
+                    ConnectorRegistry
+                             │
+          ┌──────────────────┼──────────────────┐
+          ▼                  ▼                  ▼
+        CSV              Excel             SharePoint
+                                               │
+                                      ┌────────┼────────┐
+                                      ▼        ▼        ▼
+                                     CSV     Excel     DB
+                                      │        │        │
+                                      └────────┼────────┘
+                                               ▼
+                                      Raw DataFrame
+                                      header=None
+                                               │
+                                               ▼
+                                      ┌────────────────┐
+                                      │ CleaningAgent  │
+                                      └───────┬────────┘
+                                              ▼
+                                      HeaderDetector
+                                              │
+                                              ▼
+                                        _apply_header()
+                                              │
+                                              ▼
+                                         DataCleaner
+                                              │
+                          ┌───────────────────┼──────────────────┐
+                          ▼                   ▼                  ▼
+                    Standardize          Data types         Duplicates
+                    column names
+                                              │
+                                              ▼
+                                      Clean DataFrame
+
+     - At this point, our cleaning agent can do the following:
+     1. assessing our number of rows ( before and after cleaning agent), 
+     1. number of columns ( before and after cleaning agent), 
+     3. position of our detected header (before and after cleaning agent), 
+     4. duplicates found, 
+     5. missing values found, 
+     6. duplicates removed
+     7. cleaning change rate ( what is the % of collected rows that were removed during the cleaning phase).

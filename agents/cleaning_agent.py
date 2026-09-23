@@ -200,6 +200,13 @@ class CleaningAgent(BaseAgent):
             - rows_after
         )
 
+        # -----------------------------------------
+        # Cleaning change rate metrics - % of rows removed during cleaning
+        # -----------------------------------------
+
+        cleaning_change_rate = (
+            (rows_before - rows_after) / rows_before * 100
+        ) if rows_before > 0 else 0
 
         # -----------------------------------------
         # Record final metrics
@@ -218,6 +225,11 @@ class CleaningAgent(BaseAgent):
         self.update_metric(
             "duplicates_removed",
             int(duplicates_removed)
+        )
+
+        self.update_metric(
+            "cleaning_change_rate",
+            float(cleaning_change_rate)
         )
 
 
@@ -247,5 +259,9 @@ class CleaningAgent(BaseAgent):
             f"{missing_values}"
         )
 
+        self.logger.info(
+            f"Cleaning change rate: "
+            f"{cleaning_change_rate:.2f}%"
+        )
 
         return cleaned_df

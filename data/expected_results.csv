@@ -1,0 +1,4 @@
+dataset,raw_rows,raw_columns,expected_header_row,expected_rows_after_header,expected_duplicates_found,expected_missing_values,expected_rows_after_cleaning,expected_columns_after_cleaning,expected_duplicates_removed
+Dataset 1 - Clean,6,4,0,5,0,0,5,4,0
+Dataset 2 - Metadata + Header,9,4,3,5,0,0,5,4,0
+Dataset 3 - Duplicates + Missing,11,4,3,7,2,3,5,4,2
